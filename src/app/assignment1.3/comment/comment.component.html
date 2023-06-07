@@ -1,0 +1,11 @@
+<div class="body">
+    <div class="row-content">
+        <p class="name">{{ item.name }}</p>
+        <p>{{ item.time }}</p>
+    </div>
+    <p>{{ item.comment }}</p>
+    <div class="button-content">
+        <button class="hyperlink" (click)="onEditFunc(index)">Edit</button>
+        <button class="hyperlink" (click)="onDeleteFunc(index)">Delete</button>
+    </div>  
+</div>  

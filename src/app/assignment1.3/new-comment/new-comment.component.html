@@ -1,0 +1,22 @@
+<div>
+    <h1>Comment Simulation</h1>
+    <div class="divBorder">
+        <form>
+        <h1>New Comment</h1>
+        <div class="row-content">
+            <p>Name:</p>
+            <input class="styleInput" type="text" name="name" [(ngModel)]= "edittingItem.name"/>
+        </div>
+        <div class="content">
+            <p class="styleText">Comment:</p>
+            <textarea class="styleTextArea" name="comment" [(ngModel)]= "edittingItem.comment"></textarea>
+        </div>
+        <button (click)="onSubmit()">Submit</button>
+        </form>
+    </div>
+    <h1>Comment</h1>
+    <comment *ngFor="let item of itemArr; let index = index" [item]="item" [index]="index" [onEditFunc]="onEdit" [onDeleteFunc]="onDelete"></comment>
+</div>
+  
+
+

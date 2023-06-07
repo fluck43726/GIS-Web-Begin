@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-
+import { Assignment12RoutingModule } from './assignment1.2-routing.module';
+import { Assignment12Component } from './assignment1.2.component';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ]
+  declarations: [Assignment12Component],
+  imports: [Assignment12RoutingModule],
+  bootstrap: [Assignment12Component],
 })
-export class Assignment12Module { }
+export class Assignment12Module {}

@@ -1,0 +1,43 @@
+h1 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+p {
+    font-size: 20px;
+    margin: 1px;
+}
+
+.divBorder {
+    width: 800px;
+    border-style: solid;
+    padding: 5px;
+}
+
+.row-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    width: 500px;
+    width: 500px;
+}
+
+.styleText {
+    margin-top: 0px;
+    margin-bottom: 2px;
+}
+
+.styleInput {
+    align-self: center;
+    height: 30px;
+}
+
+.styleTextArea {    
+    height: 100px;
+}

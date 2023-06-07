@@ -1,0 +1,92 @@
+h1 {
+    font-weight: bold;
+    font-size: xx-large;
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table {
+    width: 500;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+th, td {
+    width: 33%;
+    padding: 2px;
+    padding-left: 5px;
+}
+
+p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.sub-contrainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.headRow {
+    display: flex;
+    background-color: #b3d3ea;
+    color: #4071b2;
+    font-weight: bold;
+    font-size: x-large;
+    padding: 2px;
+    padding-left: 5px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.row-content {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.stickyImg {
+    position: absolute;
+    align-self: flex-end;
+    width: 300px;
+    height: 300px;
+}
+
+.highlight {
+    color: #4071b2;
+    font-weight: 600;
+}
+
+.textBold {
+    font-weight: 900;
+}
+
+.drakblueText {
+    color: #4071b2;
+}
+
+.blueText {
+    color: #89b2d3;
+}
+
+.blueBG {
+    background-color: #eaeaea;
+}
+

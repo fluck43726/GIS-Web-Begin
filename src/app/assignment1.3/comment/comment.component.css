@@ -1,0 +1,45 @@
+p {
+    font-size: 20px;
+    margin: 1px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.row-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+}
+
+.name {
+    font-weight: bold;
+    color: grey;
+    margin-right: 10px;
+}
+
+.button-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    gap: 10px;
+    font-size: 20px;
+}
+
+.hyperlink {
+    color: blue;
+    text-decoration: underline;
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0px;
+}
+
+
