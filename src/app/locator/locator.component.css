@@ -1,12 +1,12 @@
 h1 {
     margin-top: 0px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 p {
-    margin-top: 10px;
+    margin-top: 5px;
     margin-bottom: 0px;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .containner {
@@ -17,4 +17,14 @@ p {
 
 .buttonDiv {
     padding-top: 10px;
+}
+
+.input {
+    height: 35px;
+}
+
+.button {
+    display: flex;
+    height: 35px;
+    align-items: center;
 }
