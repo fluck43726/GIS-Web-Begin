@@ -19,8 +19,8 @@ export class MapService {
       map: this.map,
       container: container,
       // center: [100.5408754, 13.7030248], //TH
-      center: [-115, 45], //USA
-      zoom: 8,
+      center: [-98, 40], //USA
+      zoom: 6,
     });
   }
 }

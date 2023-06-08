@@ -22,7 +22,7 @@ import { CustomPoint } from '../locator/locator.model';
 export class Assignment4Component {
   @ViewChild('mapPanel', { static: true }) mapPanel: ElementRef<HTMLDivElement>;
   // locate: CustomPoint = new CustomPoint(100.5408754, 13.7030248); //TH
-  locate: CustomPoint = new CustomPoint(-115, 45); //USA
+  locate: CustomPoint = new CustomPoint(-98, 40); //USA
   params: IdentifyParameters;
   lastPolygon: Graphic;
   constructor(private mapService: MapService) {}
@@ -95,7 +95,6 @@ export class Assignment4Component {
     this.mapService.mapView.graphics.removeAll();
     this.mapService.mapView.goTo({
       center: [event.longitude, event.latitude],
-      zoom: 8,
     });
 
     this.drawPoint();
