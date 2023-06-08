@@ -7,7 +7,7 @@ import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import Graphic from '@arcgis/core/Graphic';
 import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
 import { identify } from '@arcgis/core/rest/identify';
-import IdentifyResult from '@arcgis/core/rest/support/IdentifyResult.js';
+// import IdentifyResult from '@arcgis/core/rest/support/IdentifyResult.js';
 import IdentifyParameters from '@arcgis/core/rest/support/IdentifyParameters';
 import PopupTemplate from '@arcgis/core/PopupTemplate.js';
 
@@ -21,74 +21,78 @@ import { CustomPoint } from '../locator/locator.model';
 })
 export class Assignment4Component {
   @ViewChild('mapPanel', { static: true }) mapPanel: ElementRef<HTMLDivElement>;
-  // locate: CustomPoint = new CustomPoint(100.5408754, 13.7030248); //TH
   locate: CustomPoint = new CustomPoint(-98, 40); //USA
-  params: IdentifyParameters;
+  params: IdentifyParameters = new IdentifyParameters();
   lastPolygon: Graphic;
+  identifyURL: string =
+    'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer';
+
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
     //render map
     this.mapService.createMap(this.mapPanel.nativeElement);
 
-    const identifyURL =
-      'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer';
-    //Add layer
+    //add layer
     const identifyLayer = new MapImageLayer({
-      url: identifyURL,
+      url: this.identifyURL,
       opacity: 0.5,
     });
 
     this.mapService.map.add(identifyLayer);
 
-    this.params = new IdentifyParameters();
     this.params.tolerance = 3;
     this.params.layerIds = [3];
-    // this.params.layerOption = 'top';
     this.params.width = this.mapService.mapView.width;
     this.params.height = this.mapService.mapView.height;
     this.params.returnGeometry = true;
 
     //on click
     this.mapService.mapView?.on('click', (mapEvent) => {
-      this.params.geometry = mapEvent.mapPoint;
-      this.params.mapExtent = this.mapService.mapView.extent;
-
-      identify(identifyURL, this.params)
-        .then((response) => {
-          const results = response.results;
-          return results.map((result: any) => {
-            let feature = result.feature;
-            feature.popupTemplate = new PopupTemplate({
-              title: feature.attributes.STATE_NAME,
-              content: `
-                <p>Population: ${feature.attributes.POP2007}</p>
-                <p>Area: ${feature.attributes.Shape_Area}</p>
-              `,
-            });
-
-            this.drawPolygon(
-              feature.geometry.rings,
-              feature.geometry.spatialReference
-            );
-            this.drawPoint();
-
-            return feature;
-          });
-        })
-        .then((responseFeatures) => {
-          if (responseFeatures.length > 0) {
-            this.mapService.mapView.popup.open({
-              features: responseFeatures,
-              location: mapEvent.mapPoint,
-            });
-          }
-        });
+      this.onClickHandler(mapEvent);
     });
 
+    //draw point
     this.drawPoint();
   }
 
+  //on click
+  onClickHandler(mapEvent: __esri.ViewClickEvent) {
+    this.params.geometry = mapEvent.mapPoint;
+    this.params.mapExtent = this.mapService.mapView.extent;
+
+    identify(this.identifyURL, this.params)
+      .then((response) => {
+        const results = response.results;
+        return results.map((result: any /*IdentifyResult*/) => {
+          let feature = result.feature;
+          feature.popupTemplate = new PopupTemplate({
+            title: feature.attributes.STATE_NAME,
+            content: this.buildContent(
+              feature.attributes.POP2007,
+              feature.attributes.Shape_Area
+            ),
+          });
+
+          this.drawPolygon(
+            feature.geometry.rings,
+            feature.geometry.spatialReference
+          );
+
+          return feature;
+        });
+      })
+      .then((responseFeatures) => {
+        if (responseFeatures.length > 0) {
+          this.mapService.mapView.popup.open({
+            features: responseFeatures,
+            location: mapEvent.mapPoint,
+          });
+        }
+      });
+  }
+
+  //locate
   onLocate(event: CustomPoint) {
     this.locate = event;
 
@@ -100,7 +104,7 @@ export class Assignment4Component {
     this.drawPoint();
   }
 
-  //Draw Point
+  //draw point
   drawPoint() {
     const point = new Point({
       longitude: this.locate.longitude || undefined,
@@ -115,17 +119,16 @@ export class Assignment4Component {
       },
     });
 
-    const graphic = new Graphic({
+    const pointGraphic = new Graphic({
       geometry: point,
       symbol: symbol,
     });
 
-    this.mapService.mapView.graphics.add(graphic);
+    this.mapService.mapView.graphics.add(pointGraphic);
   }
 
-  //Draw Polygon
+  //draw polygon
   drawPolygon(rings: number[][][] | undefined, spatialReference: any) {
-    this.mapService.mapView.graphics.remove(this.lastPolygon);
     const polygon = new Polygon({
       rings,
       spatialReference,
@@ -134,7 +137,7 @@ export class Assignment4Component {
     const solidSymbol = new SimpleFillSymbol({
       color: [0, 170, 255, 0.3],
       outline: {
-        color: [255, 255, 255],
+        color: [0, 170, 255, 0.8],
         width: 2,
       },
     });
@@ -144,7 +147,31 @@ export class Assignment4Component {
       symbol: solidSymbol,
     });
 
+    this.mapService.mapView.graphics.remove(this.lastPolygon);
     this.lastPolygon = polygonGraphic;
     this.mapService.mapView.graphics.add(polygonGraphic);
+    this.mapService.mapView.graphics.reorder(polygonGraphic, 0);
+  }
+
+  //html content
+  buildContent(population: number, area: number) {
+    return `
+      <p style="margin-bottom: 2px"><b>Population (2007):</b> ${this.formatThousandSeparate(
+        population
+      )}</p>
+      <p style="margin-bottom: 2px"><b>Area:</b> ${this.formatThousandSeparate(
+        area
+      )}</p>
+    `;
+  }
+
+  //format number
+  formatThousandSeparate(currencyVal: number) {
+    if (currencyVal) {
+      let parts = currencyVal.toString().split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return parts.join('.');
+    }
+    return currencyVal;
   }
 }
