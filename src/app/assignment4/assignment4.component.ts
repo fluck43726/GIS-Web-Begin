@@ -24,6 +24,7 @@ export class Assignment4Component {
   @ViewChild('mapPanel', { static: true }) mapPanel: ElementRef<HTMLDivElement>;
   locate: CustomPoint = new CustomPoint(-98, 40); //USA
   params: IdentifyParameters = new IdentifyParameters();
+  lastPoint: Graphic;
   lastPolygon: Graphic;
   identifyURL: string =
     'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer';
@@ -105,7 +106,7 @@ export class Assignment4Component {
     this.locate.longitude = event.longitude;
     this.locate.latitude = event.latitude;
 
-    this.mapService.mapView.graphics.removeAll();
+    this.mapService.mapView.graphics.remove(this.lastPoint);
     this.mapService.mapView.goTo({
       center: [event.longitude, event.latitude],
     });
@@ -133,6 +134,7 @@ export class Assignment4Component {
       symbol: symbol,
     });
 
+    this.lastPoint = pointGraphic;
     this.mapService.mapView.graphics.add(pointGraphic);
   }
 
