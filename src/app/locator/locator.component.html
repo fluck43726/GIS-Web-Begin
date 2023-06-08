@@ -1,9 +1,9 @@
 <h1> {{ fromTitle }}</h1>
 <div class="containner">
     <p>Latitude:</p>
-    <p-inputNumber class="input" [(ngModel)]="newCustomPoint.latitude" mode="decimal" [min]="-90" [max]="90" [minFractionDigits]="8" [maxFractionDigits]="20"></p-inputNumber>
+    <p-inputNumber class="input" mode="decimal" [min]="-90" [max]="90" [minFractionDigits]="8" [maxFractionDigits]="20" [(ngModel)]="newCustomPoint.latitude" (value)="newCustomPoint.latitude"></p-inputNumber>
     <p>Longitude:</p>
-    <p-inputNumber class="input" [(ngModel)]="newCustomPoint.longitude" mode="decimal" [min]="-180" [max]="180" [minFractionDigits]="8" [maxFractionDigits]="20"></p-inputNumber>
+    <p-inputNumber class="input" mode="decimal" [min]="-180" [max]="180" [minFractionDigits]="8" [maxFractionDigits]="20" [(ngModel)]="newCustomPoint.longitude" (value)="newCustomPoint.longitude"></p-inputNumber>
     <div class="buttonDiv">
         <button class="button" pButton type="button" (click)="onLocate()" >Locate</button>
     </div>

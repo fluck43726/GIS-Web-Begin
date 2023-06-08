@@ -10,7 +10,7 @@ export class MapService {
   map: Map;
   mapView: MapView;
 
-  createMap(container: HTMLDivElement) {
+  createMap(container: HTMLDivElement, iniLong: number, iniLat: number) {
     this.map = new Map({
       basemap: 'topo-vector',
     });
@@ -18,7 +18,7 @@ export class MapService {
     this.mapView = new MapView({
       map: this.map,
       container: container,
-      center: [-98, 40], //USA
+      center: [iniLong, iniLat], //USA
       zoom: 6,
     });
   }

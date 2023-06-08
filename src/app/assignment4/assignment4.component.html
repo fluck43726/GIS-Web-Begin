@@ -1,4 +1,4 @@
 <div #mapPanel class="map"></div>
 <div class="locator">
-    <locator (locate)="onLocate($event)"></locator>
+    <locator [longitude]="locate.longitude" [latitude]="locate.latitude" (locate)="onLocate($event)"></locator>
 </div>

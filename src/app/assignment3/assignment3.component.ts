@@ -19,10 +19,14 @@ export class Assignment3Component implements OnInit {
 
   ngOnInit(): void {
     //render map
-    this.mapService.createMap(this.mapPanel.nativeElement);
+    this.mapService.createMap(
+      this.mapPanel.nativeElement,
+      this.locate.longitude || 0,
+      this.locate.latitude || 0
+    );
 
     //Draw graphic
-    this.drawGraphic();
+    this.drawPoint();
   }
 
   onLocate(event: CustomPoint) {
@@ -31,14 +35,13 @@ export class Assignment3Component implements OnInit {
     this.mapService.mapView?.graphics.removeAll();
     this.mapService.mapView?.goTo({
       center: [event.longitude, event.latitude],
-      zoom: 15,
     });
 
-    this.drawGraphic();
+    this.drawPoint();
   }
 
   //Draw graphic
-  drawGraphic() {
+  drawPoint() {
     const point = new Point({
       longitude: this.locate.longitude || undefined,
       latitude: this.locate.latitude || undefined,

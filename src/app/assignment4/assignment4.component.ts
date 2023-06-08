@@ -6,6 +6,7 @@ import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import Graphic from '@arcgis/core/Graphic';
 import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
+
 import { identify } from '@arcgis/core/rest/identify';
 // import IdentifyResult from '@arcgis/core/rest/support/IdentifyResult.js';
 import IdentifyParameters from '@arcgis/core/rest/support/IdentifyParameters';
@@ -31,7 +32,11 @@ export class Assignment4Component {
 
   ngOnInit(): void {
     //render map
-    this.mapService.createMap(this.mapPanel.nativeElement);
+    this.mapService.createMap(
+      this.mapPanel.nativeElement,
+      this.locate.longitude || 0,
+      this.locate.latitude || 0
+    );
 
     //add layer
     const identifyLayer = new MapImageLayer({
@@ -47,19 +52,22 @@ export class Assignment4Component {
     this.params.height = this.mapService.mapView.height;
     this.params.returnGeometry = true;
 
+    //draw point
+    this.drawPoint();
+
     //on click
     this.mapService.mapView?.on('click', (mapEvent) => {
       this.onClickHandler(mapEvent);
     });
-
-    //draw point
-    this.drawPoint();
   }
 
   //on click
   onClickHandler(mapEvent: __esri.ViewClickEvent) {
     this.params.geometry = mapEvent.mapPoint;
     this.params.mapExtent = this.mapService.mapView.extent;
+
+    this.locate.longitude = mapEvent.mapPoint.longitude;
+    this.locate.latitude = mapEvent.mapPoint.latitude;
 
     identify(this.identifyURL, this.params)
       .then((response) => {
@@ -92,9 +100,10 @@ export class Assignment4Component {
       });
   }
 
-  //locate
+  //CustomPoint
   onLocate(event: CustomPoint) {
-    this.locate = event;
+    this.locate.longitude = event.longitude;
+    this.locate.latitude = event.latitude;
 
     this.mapService.mapView.graphics.removeAll();
     this.mapService.mapView.goTo({
@@ -169,7 +178,7 @@ export class Assignment4Component {
   formatThousandSeparate(currencyVal: number) {
     if (currencyVal) {
       let parts = currencyVal.toString().split('.');
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); //Regular Expression
       return parts.join('.');
     }
     return currencyVal;
