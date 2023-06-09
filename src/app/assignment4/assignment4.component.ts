@@ -1,7 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
-
 import { identify } from '@arcgis/core/rest/identify';
 import IdentifyParameters from '@arcgis/core/rest/support/IdentifyParameters';
 import PopupTemplate from '@arcgis/core/PopupTemplate.js';
@@ -65,6 +64,8 @@ export class Assignment4Component {
 
     this.params.geometry = mapEvent.mapPoint;
     this.params.mapExtent = this.mapService.mapView.extent;
+    this.mapService.mapView.graphics.removeMany(this.mapService.lastPolygon);
+    this.mapService.lastPolygon = [];
 
     const response = await identify(this.identifyURL, this.params);
     const responseFeatures = response.results.map(

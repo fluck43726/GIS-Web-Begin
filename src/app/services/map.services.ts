@@ -25,7 +25,7 @@ export class MapService {
   map: Map;
   mapView: MapView;
   lastPoint: Graphic;
-  lastPolygon: Graphic;
+  lastPolygon: Graphic[] = [];
 
   createMap(container: HTMLDivElement, Long: number, Lat: number) {
     this.map = new Map({
@@ -74,10 +74,14 @@ export class MapService {
       spatialReference,
     });
 
+    const r = Math.random() * 255; // 0
+    const g = Math.random() * 255; // 170
+    const b = Math.random() * 255; // 255
+
     const solidSymbol = new SimpleFillSymbol({
-      color: [0, 170, 255, 0.3],
+      color: [r, g, b, 0.3],
       outline: {
-        color: [0, 170, 255, 0.8],
+        color: [r, g, b, 0.8],
         width: 2,
       },
     });
@@ -87,8 +91,7 @@ export class MapService {
       symbol: solidSymbol,
     });
 
-    this.mapView.graphics.remove(this.lastPolygon);
-    this.lastPolygon = polygonGraphic;
+    this.lastPolygon.push(polygonGraphic);
     this.mapView.graphics.add(polygonGraphic);
     this.mapView.graphics.reorder(polygonGraphic, 0);
   }
