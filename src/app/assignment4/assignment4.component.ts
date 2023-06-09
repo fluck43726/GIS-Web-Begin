@@ -53,48 +53,76 @@ export class Assignment4Component {
     );
 
     //on click
-    this.mapService.mapView?.on('click', (mapEvent) => {
-      this.onClickHandler(mapEvent);
+    this.mapService.mapView?.on('click', async (mapEvent) => {
+      await this.onClickHandler(mapEvent);
     });
   }
 
   //on click
-  onClickHandler(mapEvent: __esri.ViewClickEvent) {
-    this.params.geometry = mapEvent.mapPoint;
-    this.params.mapExtent = this.mapService.mapView.extent;
-
+  async onClickHandler(mapEvent: __esri.ViewClickEvent) {
     this.locate.longitude = mapEvent.mapPoint.longitude;
     this.locate.latitude = mapEvent.mapPoint.latitude;
 
-    identify(this.identifyURL, this.params)
-      .then((response) => {
-        const results = response.results;
-        return results.map((result: NewIdentifyResultType) => {
-          let feature = result.feature;
-          feature.popupTemplate = new PopupTemplate({
-            title: feature.attributes.STATE_NAME,
-            content: this.buildContent(
-              feature.attributes.POP2007,
-              feature.attributes.Shape_Area
-            ),
-          });
+    this.params.geometry = mapEvent.mapPoint;
+    this.params.mapExtent = this.mapService.mapView.extent;
 
-          this.mapService.drawPolygon(
-            feature.geometry.rings,
-            feature.geometry.spatialReference
-          );
-
-          return feature;
+    const response = await identify(this.identifyURL, this.params);
+    const responseFeatures = response.results.map(
+      (result: NewIdentifyResultType) => {
+        let feature = result.feature;
+        feature.popupTemplate = new PopupTemplate({
+          title: feature.attributes.STATE_NAME,
+          content: this.buildContent(
+            feature.attributes.POP2007,
+            feature.attributes.Shape_Area
+          ),
         });
-      })
-      .then((responseFeatures) => {
-        if (responseFeatures.length > 0) {
-          this.mapService.mapView.popup.open({
-            features: responseFeatures,
-            location: mapEvent.mapPoint,
-          });
-        }
+
+        this.mapService.drawPolygon(
+          feature.geometry.rings,
+          feature.geometry.spatialReference
+        );
+
+        return feature;
+      }
+    );
+
+    if (responseFeatures.length > 0) {
+      this.mapService.mapView.popup.open({
+        features: responseFeatures,
+        location: mapEvent.mapPoint,
       });
+    }
+
+    // identify(this.identifyURL, this.params)
+    //   .then((response) => {
+    //     const results = response.results;
+    //     return results.map((result: NewIdentifyResultType) => {
+    //       let feature = result.feature;
+    //       feature.popupTemplate = new PopupTemplate({
+    //         title: feature.attributes.STATE_NAME,
+    //         content: this.buildContent(
+    //           feature.attributes.POP2007,
+    //           feature.attributes.Shape_Area
+    //         ),
+    //       });
+
+    //       this.mapService.drawPolygon(
+    //         feature.geometry.rings,
+    //         feature.geometry.spatialReference
+    //       );
+
+    //       return feature;
+    //     });
+    //   })
+    //   .then((responseFeatures) => {
+    //     if (responseFeatures.length > 0) {
+    //       this.mapService.mapView.popup.open({
+    //         features: responseFeatures,
+    //         location: mapEvent.mapPoint,
+    //       });
+    //     }
+    //   });
   }
 
   //CustomPoint
