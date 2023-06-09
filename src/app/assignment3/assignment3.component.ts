@@ -26,7 +26,10 @@ export class Assignment3Component implements OnInit {
     );
 
     //Draw graphic
-    this.drawPoint();
+    this.mapService.drawPoint(
+      this.locate.longitude || 0,
+      this.locate.latitude || 0
+    );
   }
 
   onLocate(event: CustomPoint) {
@@ -37,29 +40,9 @@ export class Assignment3Component implements OnInit {
       center: [event.longitude, event.latitude],
     });
 
-    this.drawPoint();
-  }
-
-  //Draw graphic
-  drawPoint() {
-    const point = new Point({
-      longitude: this.locate.longitude || undefined,
-      latitude: this.locate.latitude || undefined,
-    });
-
-    const symbol = new SimpleMarkerSymbol({
-      color: [43, 142, 255, 0.8],
-      outline: {
-        color: [43, 142, 255, 0.3],
-        width: 2,
-      },
-    });
-
-    const graphic = new Graphic({
-      geometry: point,
-      symbol: symbol,
-    });
-
-    this.mapService.mapView?.graphics.add(graphic);
+    this.mapService.drawPoint(
+      this.locate.longitude || 0,
+      this.locate.latitude || 0
+    );
   }
 }

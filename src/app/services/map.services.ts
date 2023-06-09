@@ -5,7 +5,8 @@ import MapView from '@arcgis/core/views/MapView';
 import Point from '@arcgis/core/geometry/Point';
 import Polygon from '@arcgis/core/geometry/Polygon';
 import Graphic from '@arcgis/core/Graphic';
-import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+// import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 
 import IdentifyResult from '@arcgis/core/rest/support/IdentifyResult.js';
@@ -47,13 +48,19 @@ export class MapService {
       latitude: Lat || undefined,
     });
 
-    const symbol = new SimpleMarkerSymbol({
-      color: [43, 142, 255, 0.7],
-      outline: {
-        color: [255, 255, 255, 0.5],
-        width: 2,
-      },
+    const symbol = new PictureMarkerSymbol({
+      url: 'https://cdn-icons-png.flaticon.com/512/786/786781.png?w=826&t=st=1686305598~exp=1686306198~hmac=ec58385ffa0f503824abe11d8957cba81a6a40e32b072b42d1ee61d6f5cc79ec',
+      width: '40px',
+      height: '40px',
     });
+
+    // const symbol = new SimpleMarkerSymbol({
+    //   color: [43, 142, 255, 0.7],
+    //   outline: {
+    //     color: [255, 255, 255, 0.5],
+    //     width: 2,
+    //   },
+    // });
 
     const pointGraphic = new Graphic({
       geometry: point,

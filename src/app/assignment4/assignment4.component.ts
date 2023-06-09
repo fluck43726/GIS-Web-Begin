@@ -94,36 +94,6 @@ export class Assignment4Component {
         location: mapEvent.mapPoint,
       });
     }
-
-    // identify(this.identifyURL, this.params)
-    //   .then((response) => {
-    //     const results = response.results;
-    //     return results.map((result: NewIdentifyResultType) => {
-    //       let feature = result.feature;
-    //       feature.popupTemplate = new PopupTemplate({
-    //         title: feature.attributes.STATE_NAME,
-    //         content: this.buildContent(
-    //           feature.attributes.POP2007,
-    //           feature.attributes.Shape_Area
-    //         ),
-    //       });
-
-    //       this.mapService.drawPolygon(
-    //         feature.geometry.rings,
-    //         feature.geometry.spatialReference
-    //       );
-
-    //       return feature;
-    //     });
-    //   })
-    //   .then((responseFeatures) => {
-    //     if (responseFeatures.length > 0) {
-    //       this.mapService.mapView.popup.open({
-    //         features: responseFeatures,
-    //         location: mapEvent.mapPoint,
-    //       });
-    //     }
-    //   });
   }
 
   //CustomPoint
@@ -143,16 +113,14 @@ export class Assignment4Component {
   }
 
   //html content
-  buildContent(population: number, area: number) {
-    return `
+  buildContent = (population: number, area: number) => `
     <p style="margin-bottom: 2px"><b>Population (2007):</b> ${this.formatThousandSeparate(
       population
     )}</p>
     <p style="margin-bottom: 2px"><b>Area:</b> ${this.formatThousandSeparate(
       area
     )}</p>
-    `;
-  }
+  `;
 
   //format number
   formatThousandSeparate(currencyVal: number) {
